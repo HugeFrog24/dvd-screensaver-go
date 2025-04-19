@@ -1,0 +1,26 @@
+2025/04/20 00:34:12.333362 DVD Screensaver started at 2025-04-20T00:34:12+02:00
+2025/04/20 00:34:12.333362 Initial position: (32.00, 443.00), velocity: (-1.00, -2.91), color: {255 0 0 255}
+2025/04/20 00:34:12.333362 Window created with size 800x600
+2025/04/20 00:34:12.333362 Starting game loop
+2025/04/20 00:34:13.138729 [806ms] BOUNCE: Left edge hit at position (0.00, 349.79), new velocity: (1.00, -2.91), new color: {0 255 0 255}
+2025/04/20 00:34:15.156222 [2.823s] BOUNCE: Top edge hit at position (121.00, -2.68), new velocity: (1.00, 2.91), new color: {0 0 255 255}
+2025/04/20 00:34:15.465969 [3.12s] Fullscreen toggled: true
+2025/04/20 00:34:18.271726 [5.939s] BOUNCE: Bottom edge hit at position (308.00, 542.04), new velocity: (1.00, -2.91), new color: {255 255 0 255}
+2025/04/20 00:34:21.387459 [9.055s] BOUNCE: Top edge hit at position (495.00, -2.68), new velocity: (1.00, 2.91), new color: {255 0 255 255}
+2025/04/20 00:34:24.471721 [12.139s] BOUNCE: Right edge hit at position (680.00, 536.21), new velocity: (-1.00, 2.91), new color: {0 255 255 255}
+2025/04/20 00:34:24.501709 [12.169s] BOUNCE: Bottom edge hit at position (678.00, 542.04), new velocity: (-1.00, -2.91), new color: {255 165 0 255}
+2025/04/20 00:34:27.617558 [15.285s] BOUNCE: Top edge hit at position (491.00, -2.68), new velocity: (-1.00, 2.91), new color: {128 0 128 255}
+2025/04/20 00:34:30.738070 [18.405s] BOUNCE: Bottom edge hit at position (304.00, 542.04), new velocity: (-1.00, -2.91), new color: {255 0 0 255}
+2025/04/20 00:34:33.854124 [21.521s] BOUNCE: Top edge hit at position (117.00, -2.68), new velocity: (-1.00, 2.91), new color: {0 255 0 255}
+2025/04/20 00:34:35.805219 [23.472s] BOUNCE: Left edge hit at position (0.00, 338.13), new velocity: (1.00, 2.91), new color: {0 0 255 255}
+2025/04/20 00:34:36.969222 [24.636s] BOUNCE: Bottom edge hit at position (70.00, 542.04), new velocity: (1.00, -2.91), new color: {255 255 0 255}
+2025/04/20 00:34:40.089386 [27.757s] BOUNCE: Top edge hit at position (257.00, -2.68), new velocity: (1.00, 2.91), new color: {255 0 255 255}
+2025/04/20 00:34:43.205200 [30.872s] BOUNCE: Bottom edge hit at position (444.00, 542.04), new velocity: (1.00, -2.91), new color: {0 255 255 255}
+2025/04/20 00:34:46.320332 [33.988s] BOUNCE: Top edge hit at position (631.00, -2.68), new velocity: (1.00, 2.91), new color: {255 165 0 255}
+2025/04/20 00:34:47.138201 [34.805s] BOUNCE: Right edge hit at position (680.00, 140.05), new velocity: (-1.00, 2.91), new color: {128 0 128 255}
+2025/04/20 00:34:49.435369 [37.103s] BOUNCE: Bottom edge hit at position (542.00, 542.04), new velocity: (-1.00, -2.91), new color: {255 0 0 255}
+2025/04/20 00:34:50.745160 [38.406s] Fullscreen toggled: false
+2025/04/20 00:34:51.980452 [39.636s] Fullscreen toggled: true
+2025/04/20 00:34:52.556218 [40.223s] BOUNCE: Top edge hit at position (355.00, -2.68), new velocity: (-1.00, 2.91), new color: {0 255 0 255}
+2025/04/20 00:34:55.262010 [42.921s] Fullscreen toggled: false
+2025/04/20 00:34:55.671961 [43.339s] BOUNCE: Bottom edge hit at position (168.00, 542.04), new velocity: (-1.00, -2.91), new color: {0 0 255 255}
