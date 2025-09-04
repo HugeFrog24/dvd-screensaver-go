@@ -1,36 +1,5 @@
-2025/09/04 16:33:07.471483 DVD Screensaver started at 2025-09-04T16:33:07+01:00
-2025/09/04 16:33:07.471483 Initial position: (281.00, 53.00), velocity: (-1.46, -2.62), speed: 3.0, color: {255 0 0 255}
-2025/09/04 16:33:07.471483 Window created with size 800x600
-2025/09/04 16:33:07.471483 Starting game loop
-2025/09/04 16:33:08.128547 [658ms] BOUNCE: Top edge hit at position (250.27, -2.00), new velocity: (-1.46, 2.62), new color: {0 255 0 255}
-2025/09/04 16:33:09.528696 [2.058s] Speed increased from 3.0 to 3.5
-2025/09/04 16:33:10.777385 [3.306s] BOUNCE: Left edge hit at position (-0.65, 447.16), new velocity: (1.71, 3.06), new color: {0 0 255 255}
-2025/09/04 16:33:11.292318 [3.821s] BOUNCE: Bottom edge hit at position (52.26, 541.88), new velocity: (1.71, -3.06), new color: {255 255 0 255}
-2025/09/04 16:33:11.928557 [4.458s] Speed increased from 3.5 to 4.0
-2025/09/04 16:33:12.861895 [5.391s] Speed increased from 4.0 to 4.5
-2025/09/04 16:33:13.159122 [5.688s] Speed increased from 4.5 to 5.0
-2025/09/04 16:33:13.528803 [6.058s] Speed increased from 5.0 to 5.5
-2025/09/04 16:33:13.759500 [6.287s] BOUNCE: Top edge hit at position (357.08, -3.75), new velocity: (2.68, 4.80), new color: {255 0 255 255}
-2025/09/04 16:33:13.794964 [6.324s] Speed increased from 5.5 to 6.0
-2025/09/04 16:33:14.207330 [6.736s] Speed increased from 6.0 to 6.5
-2025/09/04 16:33:14.408136 [6.937s] Speed increased from 6.5 to 7.0
-2025/09/04 16:33:14.595135 [7.124s] Speed increased from 7.0 to 7.5
-2025/09/04 16:33:14.759127 [7.288s] Speed increased from 7.5 to 8.0
-2025/09/04 16:33:14.946878 [7.476s] Speed increased from 8.0 to 8.5
-2025/09/04 16:33:15.128571 [7.658s] Speed increased from 8.5 to 9.0
-2025/09/04 16:33:15.225904 [7.755s] BOUNCE: Bottom edge hit at position (662.63, 543.19), new velocity: (4.39, -7.86), new color: {0 255 255 255}
-2025/09/04 16:33:15.292202 [7.821s] BOUNCE: Right edge hit at position (680.19, 511.76), new velocity: (-4.39, -7.86), new color: {255 165 0 255}
-2025/09/04 16:33:15.310522 [7.84s] Speed increased from 9.0 to 9.5
-2025/09/04 16:33:15.492322 [8.021s] Speed increased from 9.5 to 10.0
-2025/09/04 16:33:16.292702 [8.821s] BOUNCE: Top edge hit at position (390.73, -6.36), new velocity: (-4.88, 8.73), new color: {128 0 128 255}
-2025/09/04 16:33:17.340953 [9.87s] BOUNCE: Bottom edge hit at position (83.48, 543.63), new velocity: (-4.88, -8.73), new color: {255 0 0 255}
-2025/09/04 16:33:17.643707 [10.173s] BOUNCE: Left edge hit at position (-4.31, 386.49), new velocity: (4.88, -8.73), new color: {0 255 0 255}
-2025/09/04 16:33:18.074141 [10.603s] Speed decreased from 10.0 to 9.5
-2025/09/04 16:33:18.243876 [10.773s] Speed decreased from 9.5 to 9.0
-2025/09/04 16:33:18.407264 [10.936s] Speed decreased from 9.0 to 8.5
-2025/09/04 16:33:18.408256 [10.936s] BOUNCE: Top edge hit at position (212.72, -2.00), new velocity: (4.15, 7.42), new color: {0 0 255 255}
-2025/09/04 16:33:18.577322 [11.106s] Speed decreased from 8.5 to 8.0
-2025/09/04 16:33:18.746631 [11.276s] Speed decreased from 8.0 to 7.5
-2025/09/04 16:33:18.892316 [11.421s] Speed decreased from 7.5 to 7.0
-2025/09/04 16:33:19.043577 [11.573s] Speed decreased from 7.0 to 6.5
-2025/09/04 16:33:19.891630 [12.421s] BOUNCE: Bottom edge hit at position (518.52, 545.37), new velocity: (3.17, -5.67), new color: {255 255 0 255}
+2025/09/04 15:37:39.008718 DVD Screensaver started at 2025-09-04T15:37:38+01:00
+2025/09/04 15:37:39.018721 Initial position: (213.00, 312.00), velocity: (1.00, -2.99), speed: 3.0, color: {255 0 0 255}
+2025/09/04 15:37:39.022087 Window created with size 800x600
+2025/09/04 15:37:39.022087 Starting game loop
+2025/09/04 15:37:41.288273 [2.295s] BOUNCE: Top edge hit at position (318.00, -2.46), new velocity: (1.00, 2.99), new color: {0 255 0 255}
