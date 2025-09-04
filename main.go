@@ -26,20 +26,46 @@ const (
 	maxLogLines   = 10   // Maximum number of log lines to show in the app
 )
 
+// Config holds configurable game parameters
+type Config struct {
+	MinSpeed  float64 // Minimum speed to avoid stopping
+	MaxSpeed  float64 // Maximum speed to avoid chaos
+	SpeedStep float64 // Speed adjustment step
+}
+
+// LogoRenderer interface for creating logo images
+type LogoRenderer interface {
+	CreateLogo(width, height int, color color.RGBA) *ebiten.Image
+}
+
+// DVDLogoRenderer implements LogoRenderer for DVD-style logos
+type DVDLogoRenderer struct{}
+
+// CreateLogo creates a DVD-style logo with the given parameters
+func (r *DVDLogoRenderer) CreateLogo(width, height int, color color.RGBA) *ebiten.Image {
+	return CreateDVDLogo(width, height, color)
+}
+
 // Game implements ebiten.Game interface.
 type Game struct {
-	logoX           float64
-	logoY           float64
-	velocityX       float64
-	velocityY       float64
-	logoImage       *ebiten.Image
-	logoColors      []color.RGBA
-	colorIndex      int
-	logger          *log.Logger
-	startTime       time.Time
-	logBuffer       []string // Buffer to store recent log messages
-	isFullscreen    bool     // Track fullscreen state
-	lastFKeyPressed bool     // Track F key state to detect single presses
+	logoX             float64
+	logoY             float64
+	velocityX         float64
+	velocityY         float64
+	speed             float64 // Current speed multiplier
+	logoImage         *ebiten.Image
+	logoColors        []color.RGBA
+	colorIndex        int
+	logger            *log.Logger
+	startTime         time.Time
+	logBuffer         []string     // Buffer to store recent log messages
+	isFullscreen      bool         // Track fullscreen state
+	lastFKeyPressed   bool         // Track F key state to detect single presses
+	lastEscKeyPressed bool         // Track ESC key state to detect single presses
+	lastJKeyPressed   bool         // Track J key state to detect single presses
+	lastLKeyPressed   bool         // Track L key state to detect single presses
+	config            *Config      // Injected configuration
+	logoRenderer      LogoRenderer // Injected logo renderer
 }
 
 // LogWriter is a custom io.Writer that captures log messages for display in the app
@@ -73,15 +99,46 @@ func (g *Game) Update() error {
 	// Get elapsed time since start
 	elapsed := time.Since(g.startTime)
 
-	// Handle fullscreen toggle with F key
+	// Handle fullscreen controls
 	fKeyPressed := ebiten.IsKeyPressed(ebiten.KeyF)
+	escKeyPressed := ebiten.IsKeyPressed(ebiten.KeyEscape)
+
+	// F key toggles fullscreen
 	if fKeyPressed && !g.lastFKeyPressed {
-		g.isFullscreen = !g.isFullscreen
-		ebiten.SetFullscreen(g.isFullscreen)
-		g.logger.Printf("[%s] Fullscreen toggled: %v",
-			elapsed.Round(time.Millisecond), g.isFullscreen)
+		g.setFullscreen(!g.isFullscreen, "Fullscreen toggled", elapsed)
 	}
+
+	// ESC key exits fullscreen (only when in fullscreen mode)
+	if escKeyPressed && !g.lastEscKeyPressed && g.isFullscreen {
+		g.setFullscreen(false, "Fullscreen exited with ESC key", elapsed)
+	}
+
 	g.lastFKeyPressed = fKeyPressed
+	g.lastEscKeyPressed = escKeyPressed
+
+	// Handle speed control with J and L keys
+	jKeyPressed := ebiten.IsKeyPressed(ebiten.KeyJ)
+	lKeyPressed := ebiten.IsKeyPressed(ebiten.KeyL)
+
+	if jKeyPressed && !g.lastJKeyPressed {
+		oldSpeed := g.speed
+		g.decreaseSpeed()
+		if g.speed != oldSpeed {
+			g.logger.Printf("[%s] Speed decreased from %.1f to %.1f",
+				elapsed.Round(time.Millisecond), oldSpeed, g.speed)
+		}
+	}
+	g.lastJKeyPressed = jKeyPressed
+
+	if lKeyPressed && !g.lastLKeyPressed {
+		oldSpeed := g.speed
+		g.increaseSpeed()
+		if g.speed != oldSpeed {
+			g.logger.Printf("[%s] Speed increased from %.1f to %.1f",
+				elapsed.Round(time.Millisecond), oldSpeed, g.speed)
+		}
+	}
+	g.lastLKeyPressed = lKeyPressed
 
 	// Check for collision with screen edges
 	if g.logoX <= 0 {
@@ -141,7 +198,7 @@ func (g *Game) Draw(screen *ebiten.Image) {
 	screen.DrawImage(g.logoImage, op)
 
 	// Display FPS and controls info (on top of everything)
-	ebitenutil.DebugPrint(screen, fmt.Sprintf("FPS: %.1f | Press [F] to toggle fullscreen", ebiten.CurrentFPS()))
+	ebitenutil.DebugPrint(screen, fmt.Sprintf("FPS: %.1f | Speed: %.1f | [F] fullscreen | [ESC] exit fullscreen | [J] slower | [L] faster", ebiten.CurrentFPS(), g.speed))
 }
 
 // Layout takes the outside size (e.g., the window size) and returns the (logical) screen size.
@@ -154,20 +211,75 @@ func (g *Game) changeColor() {
 	g.colorIndex = (g.colorIndex + 1) % len(g.logoColors)
 	currentColor := g.logoColors[g.colorIndex]
 
-	// Create a new logo with the current color
-	g.logoImage = CreateDVDLogo(logoWidth, logoHeight, currentColor)
+	// Create a new logo with the current color using the injected renderer
+	g.logoImage = g.logoRenderer.CreateLogo(logoWidth, logoHeight, currentColor)
+}
+
+// increaseSpeed increases the logo speed within bounds
+func (g *Game) increaseSpeed() {
+	oldSpeed := g.speed
+	g.speed += g.config.SpeedStep
+	if g.speed > g.config.MaxSpeed {
+		g.speed = g.config.MaxSpeed
+	}
+
+	// Only update velocities if speed actually changed
+	if oldSpeed > 0 && g.speed != oldSpeed {
+		ratio := g.speed / oldSpeed
+		g.velocityX *= ratio
+		g.velocityY *= ratio
+	}
+}
+
+// decreaseSpeed decreases the logo speed within bounds
+func (g *Game) decreaseSpeed() {
+	oldSpeed := g.speed
+	g.speed -= g.config.SpeedStep
+	if g.speed < g.config.MinSpeed {
+		g.speed = g.config.MinSpeed
+	}
+
+	// Only update velocities if speed actually changed
+	if oldSpeed > 0 && g.speed != oldSpeed {
+		ratio := g.speed / oldSpeed
+		g.velocityX *= ratio
+		g.velocityY *= ratio
+	}
+}
+
+// setFullscreen handles fullscreen state changes with logging
+func (g *Game) setFullscreen(fullscreen bool, logMessage string, elapsed time.Duration) {
+	g.isFullscreen = fullscreen
+	ebiten.SetFullscreen(fullscreen)
+	g.logger.Printf("[%s] %s: %v", elapsed.Round(time.Millisecond), logMessage, fullscreen)
 }
 
 func main() {
 	// Set up random seed
 	rand.Seed(time.Now().UnixNano())
 
+	// Create configuration
+	config := &Config{
+		MinSpeed:  0.5,  // Minimum speed to avoid stopping
+		MaxSpeed:  10.0, // Maximum speed to avoid chaos
+		SpeedStep: 0.5,  // Speed adjustment step
+	}
+
+	// Create logo renderer
+	logoRenderer := &DVDLogoRenderer{}
+
 	// Create a new game instance (partially initialized)
 	game := &Game{
-		logBuffer:       make([]string, 0, maxLogLines),
-		startTime:       time.Now(),
-		isFullscreen:    false,
-		lastFKeyPressed: false,
+		logBuffer:         make([]string, 0, maxLogLines),
+		startTime:         time.Now(),
+		isFullscreen:      false,
+		lastFKeyPressed:   false,
+		lastEscKeyPressed: false,
+		lastJKeyPressed:   false,
+		lastLKeyPressed:   false,
+		speed:             3.0, // Initial speed
+		config:            config,
+		logoRenderer:      logoRenderer,
 	}
 
 	// Create a custom log writer that will update the game's log buffer
@@ -189,10 +301,9 @@ func main() {
 
 	// Create a new game
 	// Generate random velocities with a slight angle
-	speed := 3.0
 	angle := rand.Float64() * 2 * math.Pi
-	vx := math.Cos(angle) * speed
-	vy := math.Sin(angle) * speed
+	vx := math.Cos(angle) * game.speed
+	vy := math.Sin(angle) * game.speed
 
 	// Ensure we don't have very slow horizontal or vertical movement
 	if math.Abs(vx) < 1.0 {
@@ -223,11 +334,11 @@ func main() {
 	game.logger = logger
 
 	// Log initial state
-	logger.Printf("Initial position: (%.2f, %.2f), velocity: (%.2f, %.2f), color: %v",
-		initialX, initialY, vx, vy, game.logoColors[0])
+	logger.Printf("Initial position: (%.2f, %.2f), velocity: (%.2f, %.2f), speed: %.1f, color: %v",
+		initialX, initialY, vx, vy, game.speed, game.logoColors[0])
 
-	// Initialize the logo image
-	game.logoImage = CreateDVDLogo(logoWidth, logoHeight, game.logoColors[0])
+	// Initialize the logo image using the injected renderer
+	game.logoImage = game.logoRenderer.CreateLogo(logoWidth, logoHeight, game.logoColors[0])
 
 	// Set up window
 	ebiten.SetWindowSize(screenWidth, screenHeight)
